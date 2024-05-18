@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1jih2euehw7w"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/laser.gd" id="1_d2tiq"]
+[ext_resource type="Texture2D" uid="uid://nychude8kh2s" path="res://graphics/projectiles/blue.png" id="1_uxwv3"]
+[ext_resource type="AudioStream" uid="uid://bcdm5pdo27xuh" path="res://audio/laser.wav" id="3_ojf7y"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3hss4"]
+height = 110.0
+
+[node name="Laser" type="Area2D"]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_d2tiq")
+speed = 2000
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-31, 0)
+rotation = 1.5708
+texture = ExtResource("1_uxwv3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_3hss4")
+
+[node name="SelfDestructTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ojf7y")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="SelfDestructTimer" to="." method="_on_timer_timeout"]
